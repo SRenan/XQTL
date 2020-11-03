@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "Package: XQTL\nType: Package\nTitle: Analysis of chrX.\nVersion: 0.1.0\nAuthor: Renan Sauteraud\nMaintainer: Renan Sauteraud <renan.sauteraud@gmail.com>\nDescription: New model for analysis of chr X.\nLicense: What license is it under?\nEncoding: UTF-8\nLazyData: true\nRoxygenNote: 7.1.0\n",
+    "created" : 1596137405208.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2372489428",
+    "id" : "A82C7014",
+    "lastKnownWriteTime" : 1596137466,
+    "last_content_update" : 1596137466128,
+    "path" : "/gpfs/group/dxl46/default/private/renan/gits//XQTL/DESCRIPTION",
+    "project_path" : "DESCRIPTION",
+    "properties" : {
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "dcf"
+}

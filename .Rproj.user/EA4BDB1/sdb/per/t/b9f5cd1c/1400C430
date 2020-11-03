@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "#' Likelihoods for M4\n#'\n#' M4\n#'\n#' @importFrom mvtnorm dmvnorm\n#' @export\nloglM4 <- function(pars, dat){\n  outcs   <- dat$expression;\n  gts     <- dat$genotype;\n  tot.exp <- dat$tot.exp;\n  tot.gts <- dat$tot.gts;\n\n  ## parameters\n  bxa0     <- exp(pars[1])\n  bxa      <- pars[2]\n  bxi0     <- exp(pars[3])\n  bxi      <- pars[4]\n  besc0    <- pars[5]\n  besc     <- pars[6]\n  varXa    <- exp(pars[7])\n  varXi    <- exp(pars[8])\n  corXaXi  <- exp(pars[9])/(1+exp(pars[9]))\n  covXaXi  <- corXaXi*sqrt(varXa*varXi)\n  omega <- matrix(c(varXa, covXaXi, covXaXi, varXi), ncol = 2)\n  # Add data\n  gamma <- exp(besc0+besc*gts)/(1+exp(besc0+besc*gts))\n  meanmatA <- matrix(c(bxa0+bxa*gts, bxi0+bxi*gts), ncol = 2)\n  meanmatI <- matrix(c(bxa0+bxa*gts, 0*gts), ncol = 2)\n  # Fit\n  la <- dmvnorm(x = outcs-meanmatA, mean = c(0,0), sigma = omega)\n  li <- dmvnorm(x = outcs-meanmatI, mean = c(0,0), sigma = omega)\n  l <- la*gamma + li*(1-gamma)\n  # Samples without Xa/Xi-expression still contain information\n  tot.gamma <- exp(besc0+besc*tot.gts)/(1+exp(besc0+besc*tot.gts));\n  tot.la <- dnorm(tot.exp, mean = bxa0+bxa*tot.gts +\n                                  bxi0+bxi*tot.gts, sd=sqrt(sum(omega)))\n  tot.li <- dnorm(tot.exp, mean = bxa0+bxa*tot.gts, sd=sqrt(sum(omega)))\n  tot.l <- tot.la*tot.gamma + tot.li*(1-tot.gamma);\n\n  logL <- -sum(log(l))-sum(log(tot.l));\n  return(logL);\n}\n#' @export\nloglM4H0_xi <- function(pars,dat) {\n  pars_H0 <- c(pars[1:3],0,pars[4:length(pars)]);\n  return(loglM4(pars_H0, dat=dat));\n}\n#' Model M5\n#'\n#' This is the same model as M4 but with the assumption that bxi = 0. It is used\n#' to test besc = 0 under the assumption that there is no effect on Xi. In a\n#' broader sense, it should find any QTL that affects expression by modifying\n#' escape (chance of escape or amount of escape).\n#'\n#' @export\nloglM5 <- function(pars,dat) {\n  return(loglM4H0_xi(pars,dat));\n}\n#' @export\nloglM5H0_esc <- function(pars,dat) {\n  pars.full <- c(pars[1:4],0,pars[5:7]);\n  return(loglM5(pars.full,dat));\n}\n\n",
+    "created" : 1597158330282.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "247148887",
+    "id" : "1400C430",
+    "lastKnownWriteTime" : 1599615882,
+    "last_content_update" : 1599615882297,
+    "path" : "/gpfs/group/dxl46/default/private/renan/gits//XQTL/R/likelihoods3.R",
+    "project_path" : "R/likelihoods3.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

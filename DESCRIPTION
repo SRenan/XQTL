@@ -1,0 +1,13 @@
+Package: XQTL
+Type: Package
+Title: Analysis of chrX.
+Version: 0.1.0
+Author: Renan Sauteraud
+Maintainer: Renan Sauteraud <renan.sauteraud@gmail.com>
+Description: New model for analysis of chr X.
+License: GPL-2
+Encoding: UTF-8
+LazyData: true
+Import:
+  mvtnorm
+RoxygenNote: 7.1.0

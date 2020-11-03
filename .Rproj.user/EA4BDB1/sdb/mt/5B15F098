@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "# FULL MODEL -------------------\n#' @export\nloglM2 <- function(pars, dat, finiteonly = TRUE){\n  # data\n  outcs <- dat$expression\n  gts   <- dat$genotype\n  # parameters\n  bxa0     <- exp(pars[1])\n  bxa      <- pars[2]\n  bxi0     <- exp(pars[3])\n  bxi      <- pars[4]\n  besc0    <- pars[5]\n  besc     <- pars[6]\n  varXa    <- exp(pars[7])\n  varXi    <- exp(pars[8])\n  corXaXi  <- exp(pars[9])/(1+exp(pars[9]))\n  covXaXi  <- corXaXi*sqrt(varXa*varXi)\n  omega <- matrix(c(varXa, covXaXi, covXaXi, varXi), ncol = 2)\n  # Add data\n  gamma <- exp(besc0+besc*gts)/(1+exp(besc0+besc*gts))\n  meanmatA <- matrix(c(bxa0+bxa*gts, bxi0+bxi*gts), ncol = 2)\n  meanmatI <- matrix(c(bxa0+bxa*gts, 0*gts), ncol = 2)\n  # Fit\n  la <- dmvnorm(x = outcs-meanmatA, mean = c(0,0), sigma = omega, log = T)\n  li <- dmvnorm(x = outcs-meanmatI, mean = c(0,0), sigma = omega, log = T)\n  l <- exp(la)*gamma + exp(li)*(1-gamma)\n  logL <- log(l)\n  if(finiteonly){\n    ret <- -sum(logL[is.finite(logL)])\n  } else{\n    ret <- -sum(logL)\n  }\n  return(ret)\n}\n\n# REDUCED MODEL  -------------------\n#' @export\nloglM2H0_xa <- function(pars, dat, finiteonly = TRUE){\n  pars_H0 <- c(pars[1],0,pars[3:length(pars)]);\n  ret <- loglM2(pars = pars_H0, dat = dat, finiteonly = finiteonly)\n  return(ret)\n}\n#' @export\nloglM2H0_xi <- function(pars, dat, finiteonly = TRUE){\n  pars_H0 <- c(pars[1:3],0,pars[5:length(pars)]);\n  ret <- loglM2(pars = pars_H0, dat = dat, finiteonly = finiteonly)\n  return(ret)\n}\n",
+    "created" : 1601397606293.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3316102115",
+    "id" : "5B15F098",
+    "lastKnownWriteTime" : 1601398218,
+    "last_content_update" : 1601398218153,
+    "path" : "/gpfs/group/dxl46/default/private/renan/gits//XQTL/R/M2.R",
+    "project_path" : "R/M2.R",
+    "properties" : {
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
